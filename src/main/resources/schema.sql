@@ -1,3 +1,6 @@
+ALTER TABLE users DROP FOREIGN KEY fk_status_id;
+ALTER TABLE users DROP FOREIGN KEY fk_level_id;
+ALTER TABLE users DROP FOREIGN KEY fk_organization_id;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS levels;
 DROP TABLE IF EXISTS statuses;

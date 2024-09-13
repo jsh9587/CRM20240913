@@ -42,7 +42,7 @@
                     </tr>
                     </tfoot>
                     <tbody>
-                    <c:forEach var="user" items="${userList}">
+                    <c:forEach var="user" items="${users}">
                         <tr>
                             <td class="text-center align-middle">${user.name}</td>
                             <td class="text-center align-middle">${user.email}</td>

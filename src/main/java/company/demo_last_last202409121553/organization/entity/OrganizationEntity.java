@@ -15,8 +15,8 @@ public class OrganizationEntity {
     private int id;
     @Column(length = 4,nullable = false)
     private int depth;
-    @Column(nullable = false)
-    private int parent_id;
+    @Column(name="parent_id",nullable = false)
+    private int parentId;
     @Column(nullable = false)
     private int status;
     @Column(nullable = false)
