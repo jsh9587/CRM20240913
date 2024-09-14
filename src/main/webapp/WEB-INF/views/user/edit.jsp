@@ -132,7 +132,7 @@
             }else if( depth === 3 ){
                 depth4.innerHTML = defaultOption;
             }
-            fetch('/api/getOrganizations', {
+            fetch('/api/organization/getOrganizations', {
                 method: 'POST',
                 body: JSON.stringify({
                     'parent_id':parent_id,
@@ -263,71 +263,70 @@
             }
             return null;
         }
-        // function fetchOrganization(){
-        //     fetch("/api/getUserOrganizations",{
-        //         method: "POST",
-        //          body: JSON.stringify({
-        //              id:document.querySelector('#user_id').value
-        //          }),
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         }
-        //     })
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             // 서버 응답이 성공적이지 않은 경우
-        //             return response.json().then(data => {
-        //                 // 서버에서 반환된 에러 메시지
-        //                 const errorMessage = data.message || '알 수 없는 오류가 발생했습니다.';
-        //                 alert(errorMessage);
-        //                 throw new Error(errorMessage);
-        //             });
-        //         }
-        //         // 응답이 성공적일 경우
-        //         return response.json();
-        //     })
-        //     .then(data => {
-        //         let changeEvent;
-        //         if( data[0] ){
-        //             depth1.value = data[0]['id']; // 값을 직접 설정
-        //             // 강제로 change 이벤트를 트리거
-        //             changeEvent = new Event('change', { bubbles: true });
-        //             depth1.dispatchEvent(changeEvent);
-        //
-        //         }
-        //         if( data[1] ){
-        //             setTimeout(function (){
-        //                 depth2.value = data[1]['id']; // 값을 직접 설정
-        //                 // 강제로 change 이벤트를 트리거
-        //                 changeEvent = new Event('change', { bubbles: true });
-        //                 depth2.dispatchEvent(changeEvent);
-        //             },100);
-        //         }
-        //         if( data[2] ){
-        //             setTimeout(function (){
-        //                 depth3.value = data[2]['id']; // 값을 직접 설정
-        //                 // 강제로 change 이벤트를 트리거
-        //                 changeEvent = new Event('change', { bubbles: true });
-        //                 depth3.dispatchEvent(changeEvent);
-        //             },200);
-        //         }
-        //         if( data[3] ){
-        //             setTimeout(function (){
-        //                 depth4.value = data[3]['id']; // 값을 직접 설정
-        //                 // 강제로 change 이벤트를 트리거
-        //                 changeEvent = new Event('change', { bubbles: true });
-        //                 depth4.dispatchEvent(changeEvent);
-        //             },300);
-        //         }
-        //         console.log(data);
-        //     })
-        //     .catch(error => {
-        //         console.error('Error:', error);
-        //     });
-        // }
+        function fetchOrganization(){
+            fetch("/api/organization/getUserOrganizations",{
+                method: "POST",
+                body: JSON.stringify({
+                     id:document.querySelector('#user_id').value
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // 서버 응답이 성공적이지 않은 경우
+                    return response.json().then(data => {
+                        // 서버에서 반환된 에러 메시지
+                        const errorMessage = data.message || '알 수 없는 오류가 발생했습니다.';
+                        alert(errorMessage);
+                        throw new Error(errorMessage);
+                    });
+                }
+                // 응답이 성공적일 경우
+                return response.json();
+            })
+            .then(data => {
+                let changeEvent;
+                if( data[0] ){
+                    depth1.value = data[0]['id']; // 값을 직접 설정
+                    // 강제로 change 이벤트를 트리거
+                    changeEvent = new Event('change', { bubbles: true });
+                    depth1.dispatchEvent(changeEvent);
+                }
+                if( data[1] ){
+                    setTimeout(function (){
+                        depth2.value = data[1]['id']; // 값을 직접 설정
+                        // 강제로 change 이벤트를 트리거
+                        changeEvent = new Event('change', { bubbles: true });
+                        depth2.dispatchEvent(changeEvent);
+                    },100);
+                }
+                if( data[2] ){
+                    setTimeout(function (){
+                        depth3.value = data[2]['id']; // 값을 직접 설정
+                        // 강제로 change 이벤트를 트리거
+                        changeEvent = new Event('change', { bubbles: true });
+                        depth3.dispatchEvent(changeEvent);
+                    },200);
+                }
+                if( data[3] ){
+                    setTimeout(function (){
+                        depth4.value = data[3]['id']; // 값을 직접 설정
+                        // 강제로 change 이벤트를 트리거
+                        changeEvent = new Event('change', { bubbles: true });
+                        depth4.dispatchEvent(changeEvent);
+                    },300);
+                }
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
 
         SearchOrganization(0,1);
-        //fetchOrganization();
+        fetchOrganization();
     });
 
 </script>

@@ -1,7 +1,9 @@
 package company.demo_last_last202409121553.organization.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import company.demo_last_last202409121553.user.entity.UserEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class OrganizationEntity {
     @Column(length = 4,nullable = false)
     private int depth;
     @Column(name="parent_id",nullable = false)
+    @Min(0)
     private int parentId;
     @Column(nullable = false)
     private int status;
@@ -25,5 +28,6 @@ public class OrganizationEntity {
     private String name;
 
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<UserEntity> users;
 }
