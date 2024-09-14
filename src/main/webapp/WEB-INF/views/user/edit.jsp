@@ -185,68 +185,74 @@
             });
         });
 
-        // submitButton.addEventListener('click',function (){
-        //     if( nameBox.value === ''){
-        //         alert('이름을 입력해주세요');
-        //         return false;
-        //     }
-        //     if( levelBox.value === ''){
-        //         alert('직급을 선택해주세요');
-        //         return false;
-        //     }
-        //     if(
-        //         depth1.value === '' &&
-        //         depth2.value === '' &&
-        //         depth3.value === '' &&
-        //         depth4.value === ''
-        //     ){
-        //         alert('조직을 선택해주세요');
-        //         return false;
-        //     }
-        //     if( statusBox.value === ''){
-        //         alert('상태를 선택해주세요');
-        //         return false;
-        //     }
-        //     const lastSelectedOrganizationValue = lastSelectedOrganization();
-        //     const requestData = {
-        //         id: document.querySelector('#user_id').value,
-        //         name: nameBox.value,
-        //         email: emailBox.value,
-        //         level_id: levelBox.value,
-        //         organization_id: lastSelectedOrganizationValue,
-        //         status_id: statusBox.value,
-        //         password: passwordBox.value
-        //     };
-        //     fetch('/api/userEdit',{
-        //         method: 'POST',
-        //         body: JSON.stringify(requestData),
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         }
-        //     })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 // 서버 응답이 성공적이지 않은 경우
-        //                 return response.json().then(data => {
-        //                     // 서버에서 반환된 에러 메시지
-        //                     const errorMessage = data.message || '알 수 없는 오류가 발생했습니다.';
-        //                     alert(errorMessage);
-        //                     throw new Error(errorMessage);
-        //                 });
-        //             }
-        //
-        //             // 응답이 성공적일 경우
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             alert('수정완료');
-        //             document.location.href='/user';
-        //             console.log(data);
-        //         })
-        //         .catch(error => {
-        //             console.error('Error:', error);
-        //         });
-        // });
+        submitButton.addEventListener('click',function (){
+            if( nameBox.value === ''){
+                alert('이름을 입력해주세요');
+                return false;
+            }
+            if( levelBox.value === ''){
+                alert('직급을 선택해주세요');
+                return false;
+            }
+            if(
+                depth1.value === '' &&
+                depth2.value === '' &&
+                depth3.value === '' &&
+                depth4.value === ''
+            ){
+                alert('조직을 선택해주세요');
+                return false;
+            }
+            if( statusBox.value === ''){
+                alert('상태를 선택해주세요');
+                return false;
+            }
+            const lastSelectedOrganizationValue = lastSelectedOrganization();
+            const requestData = {
+                id: document.querySelector('#user_id').value,
+                name: nameBox.value,
+                email: emailBox.value,
+                level:{
+                    id:levelBox.value
+                } ,
+                organization:{
+                    id: lastSelectedOrganizationValue
+                },
+                status:{
+                    id:statusBox.value
+                } ,
+                password: passwordBox.value
+            };
+            fetch('/api/user/userEdit',{
+                method: 'POST',
+                body: JSON.stringify(requestData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        // 서버 응답이 성공적이지 않은 경우
+                        return response.json().then(data => {
+                            // 서버에서 반환된 에러 메시지
+                            const errorMessage = data.message || '알 수 없는 오류가 발생했습니다.';
+                            alert(errorMessage);
+                            throw new Error(errorMessage);
+                        });
+                    }
+
+                    // 응답이 성공적일 경우
+                    return response.text();
+                })
+                .then(data => {
+                    alert('수정완료');
+                    document.location.href='/user';
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
 
         function lastSelectedOrganization(){
             let depths =[
