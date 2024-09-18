@@ -1,9 +1,9 @@
 package company.demo_last_last202409121553.user.controller.api;
 
 
-import company.demo_last_last202409121553.user.dto.request.edit.EditRequest;
-import company.demo_last_last202409121553.user.dto.request.findByEmail.FindByEmailRequest;
-import company.demo_last_last202409121553.user.dto.request.store.StoreRequest;
+import company.demo_last_last202409121553.user.dto.request.edit.UserEditRequest;
+import company.demo_last_last202409121553.user.dto.request.findByEmail.UserFindByEmailRequest;
+import company.demo_last_last202409121553.user.dto.request.store.UserStoreRequest;
 import company.demo_last_last202409121553.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,12 +23,12 @@ public class ApiUserController {
     private final UserService userService;
 
     @PostMapping("/emailCheck")
-    public ResponseEntity<Boolean> emailCheck(@RequestBody FindByEmailRequest request) {
+    public ResponseEntity<Boolean> emailCheck(@RequestBody UserFindByEmailRequest request) {
         return ResponseEntity.ok(userService.emailCheck(request.getEmail()));
     }
 
     @PostMapping("/userStore")
-    public ResponseEntity<?> userStore(@Valid @RequestBody StoreRequest request) {
+    public ResponseEntity<?> userStore(@Valid @RequestBody UserStoreRequest request) {
         try {
             boolean isSuccess = userService.store(request);
 
@@ -48,7 +48,7 @@ public class ApiUserController {
         }
     }
     @PostMapping("/userEdit")
-    public ResponseEntity<?> userEdit(@Valid @RequestBody EditRequest request) {
+    public ResponseEntity<?> userEdit(@Valid @RequestBody UserEditRequest request) {
         try {
             boolean isSuccess = userService.edit(request);
 

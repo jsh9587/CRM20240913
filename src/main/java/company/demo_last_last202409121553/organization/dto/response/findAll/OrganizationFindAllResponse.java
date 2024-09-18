@@ -1,7 +1,6 @@
 package company.demo_last_last202409121553.organization.dto.response.findAll;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import company.demo_last_last202409121553.organization.dto.response.findById.FindByIdUserEntityDto;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FindAllResponse implements Serializable {
+public class OrganizationFindAllResponse implements Serializable {
     private int id;
     private int depth;
     @Min(0)
@@ -25,9 +24,9 @@ public class FindAllResponse implements Serializable {
     private int sort;
     private String name;
     private List<FindAllUserEntityDto> users = new ArrayList<>();
-    private List<FindAllResponse> children = new ArrayList<>();
+    private List<OrganizationFindAllResponse> children = new ArrayList<>();
 
-    public FindAllResponse(int id, String name, int depth, int parent_id, int status, int sort, List<FindAllUserEntityDto> users, List<FindAllResponse> children) {
+    public OrganizationFindAllResponse(int id, String name, int depth, int parent_id, int status, int sort, List<FindAllUserEntityDto> users, List<OrganizationFindAllResponse> children) {
         this.id = id;
         this.name = name;
         this.depth = depth;

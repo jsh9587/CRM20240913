@@ -227,7 +227,7 @@
     organizationEl.forEach(function (item) {
         item.addEventListener('click', function () {
             const organizationId = item.getAttribute('organization_id');
-            fetch("/api/getOrganization", {
+            fetch("/api/organization/getOrganization", {
                 method: 'POST',
                 body: JSON.stringify({
                     'id': organizationId
@@ -313,7 +313,7 @@
             };
 
             console.log(requestData);
-            fetch("/api/organizationStore", {
+            fetch("/api/organization/organizationStore", {
                 method: 'POST',
                 body: JSON.stringify(requestData),
                 headers: {
@@ -369,7 +369,7 @@
                 status: statusBox.value,
                 parent_id: parentIdBox.value
             };
-            fetch("/api/organizationEdit", {
+            fetch("/api/organization/organizationEdit", {
                 method: 'POST',
                 body: JSON.stringify(requestData),
                 headers: {

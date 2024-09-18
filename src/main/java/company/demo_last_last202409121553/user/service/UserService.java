@@ -4,8 +4,8 @@ import company.demo_last_last202409121553.level.entity.LevelEntity;
 import company.demo_last_last202409121553.level.repository.LevelRepository;
 import company.demo_last_last202409121553.organization.entity.OrganizationEntity;
 import company.demo_last_last202409121553.organization.repository.OrganizationRepository;
-import company.demo_last_last202409121553.user.dto.request.edit.EditRequest;
-import company.demo_last_last202409121553.user.dto.request.store.StoreRequest;
+import company.demo_last_last202409121553.user.dto.request.edit.UserEditRequest;
+import company.demo_last_last202409121553.user.dto.request.store.UserStoreRequest;
 import company.demo_last_last202409121553.user.dto.response.findById.FindByIdResponse;
 import company.demo_last_last202409121553.user.dto.response.findById.LevelEntityDto;
 import company.demo_last_last202409121553.user.dto.response.findById.OrganizationEntityDto;
@@ -67,7 +67,7 @@ public class UserService {
                 .orElse(true);
     }
 
-    public boolean store(StoreRequest storeRequest) {
+    public boolean store(UserStoreRequest storeRequest) {
         try {
             StatusEntity status = statusRepository.findById(storeRequest.getStatus().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid Status ID"));
@@ -94,7 +94,7 @@ public class UserService {
         }
     }
 
-    public boolean edit(EditRequest editRequest) {
+    public boolean edit(UserEditRequest editRequest) {
         try {
             UserEntity existingUser = userRepository.findById(editRequest.getId())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));

@@ -3,7 +3,6 @@ package company.demo_last_last202409121553.user.controller;
 
 import company.demo_last_last202409121553.level.entity.LevelEntity;
 import company.demo_last_last202409121553.level.service.LevelService;
-import company.demo_last_last202409121553.organization.dto.response.findAll.FindAllResponse;
 import company.demo_last_last202409121553.organization.service.OrganizationService;
 import company.demo_last_last202409121553.user.dto.response.findById.FindByIdResponse;
 import company.demo_last_last202409121553.user.entity.StatusEntity;

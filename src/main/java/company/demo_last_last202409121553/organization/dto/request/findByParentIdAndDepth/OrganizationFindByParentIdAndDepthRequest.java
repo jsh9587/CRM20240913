@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 
 @Getter
-public class FindByParentIdAndDepthRequest {
+public class OrganizationFindByParentIdAndDepthRequest {
 
     @NotNull(message = "parent_id는 필수 값입니다.")
     @Min(0)

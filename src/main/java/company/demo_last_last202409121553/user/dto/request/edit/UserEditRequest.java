@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 @Value
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EditRequest implements Serializable {
+public class UserEditRequest implements Serializable {
     int id;
     String name;
     String email;
@@ -19,7 +19,7 @@ public class EditRequest implements Serializable {
     LevelEntityDto level;
     OrganizationEntityDto organization;
 
-    public EditRequest(int id, String name, String email, String password, StatusEntityDto status, LevelEntityDto level, OrganizationEntityDto organization) {
+    public UserEditRequest(int id, String name, String email, String password, StatusEntityDto status, LevelEntityDto level, OrganizationEntityDto organization) {
         this.id = id;
         this.name = name;
         this.email = email;

@@ -1,7 +1,5 @@
 package company.demo_last_last202409121553.organization.repository;
 
-import company.demo_last_last202409121553.organization.dto.response.findAll.FindAllResponse;
-import company.demo_last_last202409121553.organization.dto.response.findById.FindByIdResponse;
 import company.demo_last_last202409121553.organization.entity.OrganizationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

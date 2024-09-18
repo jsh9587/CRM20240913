@@ -1,10 +1,10 @@
 package company.demo_last_last202409121553.organization.service;
 
-import company.demo_last_last202409121553.organization.dto.response.findAll.FindAllResponse;
+import company.demo_last_last202409121553.organization.dto.response.findAll.OrganizationFindAllResponse;
 import company.demo_last_last202409121553.organization.dto.response.findAll.FindAllUserEntityDto;
-import company.demo_last_last202409121553.organization.dto.response.findById.FindByIdResponse;
+import company.demo_last_last202409121553.organization.dto.response.findById.OrganizationFindByIdResponse;
 import company.demo_last_last202409121553.organization.dto.response.findById.FindByIdUserEntityDto;
-import company.demo_last_last202409121553.organization.dto.response.findByParentIdAndDepth.FindByParentIdAndDepthResponse;
+import company.demo_last_last202409121553.organization.dto.response.findByParentIdAndDepth.OrganizationFindByParentIdAndDepthResponse;
 import company.demo_last_last202409121553.organization.entity.OrganizationEntity;
 import company.demo_last_last202409121553.organization.repository.OrganizationRepository;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ public class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
-    public List<FindAllResponse> findAll() {
+    public List<OrganizationFindAllResponse> findAll() {
         List<OrganizationEntity> organizationEntities = organizationRepository.findAll();
         return organizationEntities.stream()
-                .map(org -> new FindAllResponse(
+                .map(org -> new OrganizationFindAllResponse(
                         org.getId(),
                         org.getName(),
                         org.getDepth(),
@@ -45,10 +45,10 @@ public class OrganizationService {
                 .collect(Collectors.toList());
     }
 
-    public List<FindByParentIdAndDepthResponse> findByParentIdAndDepth(int parentId, int depth) {
+    public List<OrganizationFindByParentIdAndDepthResponse> findByParentIdAndDepth(int parentId, int depth) {
         List<OrganizationEntity> organizationEntities =  organizationRepository.findByParentIdAndDepth(parentId, depth);
         return organizationEntities.stream()
-                .map( org -> new FindByParentIdAndDepthResponse(
+                .map( org -> new OrganizationFindByParentIdAndDepthResponse(
                         org.getId(),
                         org.getDepth(),
                         org.getParentId(),
@@ -58,10 +58,10 @@ public class OrganizationService {
                 )).collect(Collectors.toList());
     }
 
-    public FindByIdResponse findById(int id) {
+    public OrganizationFindByIdResponse findById(int id) {
         OrganizationEntity organizationEntity = organizationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Organization not found with id: " + id));
-        return new FindByIdResponse(
+        return new OrganizationFindByIdResponse(
                 organizationEntity.getId(),
                 organizationEntity.getDepth(),
                 organizationEntity.getParentId(),
@@ -79,14 +79,14 @@ public class OrganizationService {
         );
     }
 
-    public List<FindAllResponse> getOrganizationHierarchy() {
-        List<FindAllResponse> allOrganizations = findAll();
+    public List<OrganizationFindAllResponse> getOrganizationHierarchy() {
+        List<OrganizationFindAllResponse> allOrganizations = findAll();
         return buildHierarchy(allOrganizations, 0); // Assuming 0 is the root parent_id
     }
 
-    private List<FindAllResponse> buildHierarchy(List<FindAllResponse> allOrganizations, int parentId) {
-        List<FindAllResponse> hierarchy = new ArrayList<>();
-        for (FindAllResponse org : allOrganizations) {
+    private List<OrganizationFindAllResponse> buildHierarchy(List<OrganizationFindAllResponse> allOrganizations, int parentId) {
+        List<OrganizationFindAllResponse> hierarchy = new ArrayList<>();
+        for (OrganizationFindAllResponse org : allOrganizations) {
             if (org.getParent_id() == parentId) {
                 org.setChildren(buildHierarchy(allOrganizations, org.getId()));
                 hierarchy.add(org);
@@ -95,10 +95,10 @@ public class OrganizationService {
         return hierarchy;
     }
 
-    public ArrayList<FindByIdResponse> getUserOrganizations(int id) {
-        ArrayList<FindByIdResponse> organizationHierarchy = new ArrayList<>();
+    public ArrayList<OrganizationFindByIdResponse> getUserOrganizations(int id) {
+        ArrayList<OrganizationFindByIdResponse> organizationHierarchy = new ArrayList<>();
         // Fetch the initial organization (e.g., 1st level)
-        FindByIdResponse org = findById(id);
+        OrganizationFindByIdResponse org = findById(id);
         organizationHierarchy.add(org);
         // Recursively fetch parent organizations up to 4 levels
         int depth = 1;

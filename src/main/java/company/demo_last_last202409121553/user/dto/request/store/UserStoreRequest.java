@@ -2,7 +2,6 @@ package company.demo_last_last202409121553.user.dto.request.store;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.Value;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,7 +12,7 @@ import java.io.Serializable;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class StoreRequest implements Serializable {
+public class UserStoreRequest implements Serializable {
     private int id;
     @NotEmpty(message = "이름은 필수값 입니다")
     private String name;

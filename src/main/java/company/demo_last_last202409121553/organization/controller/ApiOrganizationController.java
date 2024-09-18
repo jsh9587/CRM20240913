@@ -1,8 +1,9 @@
 package company.demo_last_last202409121553.organization.controller;
 
-import company.demo_last_last202409121553.organization.dto.request.findByParentIdAndDepth.FindByParentIdAndDepthRequest;
+import company.demo_last_last202409121553.organization.dto.request.findByParentIdAndDepth.OrganizationFindByParentIdAndDepthRequest;
+import company.demo_last_last202409121553.organization.dto.response.findById.OrganizationFindByIdResponse;
 import company.demo_last_last202409121553.organization.service.OrganizationService;
-import company.demo_last_last202409121553.user.dto.request.findById.FindByIdRequest;
+import company.demo_last_last202409121553.user.dto.request.findById.UserFindByIdRequest;
 import company.demo_last_last202409121553.user.dto.response.findById.FindByIdResponse;
 import company.demo_last_last202409121553.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +25,15 @@ public class ApiOrganizationController {
     private final UserService userService;
 
     @PostMapping("/getOrganizations")
-    public ResponseEntity<?> getOrganizations(@Valid @RequestBody FindByParentIdAndDepthRequest request) {
+    public ResponseEntity<?> getOrganizations(@Valid @RequestBody OrganizationFindByParentIdAndDepthRequest request) {
         // 서비스 로직 처리
           return ResponseEntity.ok(organizationService.findByParentIdAndDepth(request.getParent_id(), request.getDepth()));
     }
 
     @PostMapping("/getUserOrganizations")
-    public ResponseEntity<?> getUserOrganizations(@Valid @RequestBody FindByIdRequest request) {
+    public ResponseEntity<?> getUserOrganizations(@Valid @RequestBody UserFindByIdRequest request) {
         FindByIdResponse response = userService.findById(request.getId());
-        ArrayList<company.demo_last_last202409121553.organization.dto.response.findById.FindByIdResponse> organizations = organizationService.getUserOrganizations(response.getOrganization().getId());
+        ArrayList<OrganizationFindByIdResponse> organizations = organizationService.getUserOrganizations(response.getOrganization().getId());
         return ResponseEntity.ok(organizations);
     }
 
