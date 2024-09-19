@@ -14,8 +14,7 @@ import java.io.Serializable;
 public class OrganizationFindByParentIdAndDepthResponse implements Serializable {
     int id;
     int depth;
-    @Min(0)
-    int parentId;
+    Integer parentId;
     int status;
     int sort;
     String name;

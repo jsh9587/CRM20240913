@@ -6,11 +6,16 @@ import company.demo_last_last202409121553.organization.entity.OrganizationEntity
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Arrays;  // Arrays 클래스 import 추가
+import java.util.Collections;  // Collections 클래스 import 추가 (대체 방법용)
 @Entity(name = "UserEntity")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,8 +29,13 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(columnDefinition = "USER")
-    private String roles;
+    // roles를 Enum 타입으로 저장
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Set<RoleEnum> roles = new HashSet<>();
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", nullable = false)
@@ -39,30 +49,28 @@ public class UserEntity {
     @JoinColumn(name = "organization_id", nullable = false)
     private OrganizationEntity organization;
 
-
-
-    // UserEntity의 생성자
+    // Builder 패턴 사용
     private UserEntity(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
         this.email = builder.email;
         this.password = builder.password;
-        this.roles = builder.roles;
+        this.roles = builder.roles; // roles를 String으로 저장
         this.status = builder.status;
         this.level = builder.level;
         this.organization = builder.organization;
     }
 
-    // Builder 클래스 생성
+    // Builder 클래스
     public static class Builder {
         private int id;
         private String name;
         private String email;
         private String password;
-        private String roles;
         private StatusEntity status;
         private LevelEntity level;
         private OrganizationEntity organization;
+        private Set<RoleEnum> roles = new HashSet<>();
 
         public Builder id(int id) {
             this.id = id;
@@ -84,8 +92,8 @@ public class UserEntity {
             return this;
         }
 
-        public Builder roles(String roles) {
-            this.roles = roles;
+        public Builder roles(RoleEnum... rolesEnum) {
+            this.roles.addAll(Set.of(rolesEnum));
             return this;
         }
 
@@ -109,3 +117,4 @@ public class UserEntity {
         }
     }
 }
+

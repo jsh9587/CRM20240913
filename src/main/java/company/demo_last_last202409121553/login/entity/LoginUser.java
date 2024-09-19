@@ -1,7 +1,11 @@
 package company.demo_last_last202409121553.login.entity;
 
+import company.demo_last_last202409121553.user.entity.RoleEnum;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "login_users")
 @Data
@@ -18,6 +22,11 @@ public class LoginUser {
 
     private String password;
 
-    private String roles;
+    // roles를 Enum 타입으로 저장
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Set<RoleEnum> roles = new HashSet<>();
 
 }

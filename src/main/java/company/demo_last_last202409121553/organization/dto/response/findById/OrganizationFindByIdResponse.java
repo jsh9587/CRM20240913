@@ -1,7 +1,9 @@
 package company.demo_last_last202409121553.organization.dto.response.findById;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import company.demo_last_last202409121553.user.entity.UserEntity;
 import jakarta.validation.constraints.Min;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
 
@@ -14,14 +16,16 @@ import java.util.List;
 @Value
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
+@Builder
 public class OrganizationFindByIdResponse implements Serializable {
     int id;
     int depth;
-    @Min(0)
-    int parent_id;
+    Integer parent_id;
     int status;
     int sort;
     String name;
     List<FindByIdUserEntityDto> users;
+    FindByIdParentEntityDto parent;
+
 
 }

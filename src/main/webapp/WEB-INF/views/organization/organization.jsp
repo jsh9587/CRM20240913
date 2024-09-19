@@ -256,8 +256,10 @@
                     depthBox.value = data.depth;
                     sortBox.value = data.sort;
                     statusBox.value = data.status;
-                    parentIdBox.value = data.parent_id;
-                    parentBox.value = data.parent.name;
+                    if( data.parent !== null ){
+                        parentIdBox.value = data.parent_id;
+                        parentBox.value = data.parent.name;
+                    }
                     if (organizationIdBox.value) {
                         editButton.style.display = 'inline-block';
                         if (data.depth < 4) {
@@ -377,7 +379,6 @@
                 }
             })
                 .then(response => {
-                    console.log('Response status:', response.status); // 응답 상태 코드 확인
                     if (!response.ok) {
                         // 서버 응답이 성공적이지 않은 경우
                         return response.json().then(data => {
@@ -387,7 +388,9 @@
                             throw new Error(errorMessage);
                         });
                     }
-                    return response.json();
+
+                    // 응답이 성공적일 경우
+                    return response.text();
                 })
                 .then(data => {
                     console.log(data);

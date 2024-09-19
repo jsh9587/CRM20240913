@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -34,6 +36,8 @@ public class SecurityConfig {
                         .requestMatchers("/img/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/favicon.ico").permitAll()
+                        .requestMatchers("/organization","/organization/**").hasAnyRole("IT","ROOT")
+                        .requestMatchers("/level","/level/**").hasAnyRole("IT","LEVEL")
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .anyRequest().authenticated()  // 어떠한 요청이라도 인증필요
                 )
@@ -41,8 +45,17 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
-                .logout(withDefaults());   // 로그아웃은 기본설정으로 (/logout으로 인증해제)
-
+                .logout(withDefaults())  // 로그아웃은 기본설정으로 (/logout으로 인증해제)
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(accessDeniedHandler())  // 사용자 정의 403 페이지 설정
+                );
         return http.build();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.sendRedirect("/403");
+        };
     }
 }

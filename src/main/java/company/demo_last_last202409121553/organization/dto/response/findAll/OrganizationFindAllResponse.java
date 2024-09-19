@@ -18,22 +18,21 @@ import java.util.List;
 public class OrganizationFindAllResponse implements Serializable {
     private int id;
     private int depth;
-    @Min(0)
-    private int parent_id;
+    private Integer parent_id;
     private int status;
     private int sort;
     private String name;
     private List<FindAllUserEntityDto> users = new ArrayList<>();
     private List<OrganizationFindAllResponse> children = new ArrayList<>();
 
-    public OrganizationFindAllResponse(int id, String name, int depth, int parent_id, int status, int sort, List<FindAllUserEntityDto> users, List<OrganizationFindAllResponse> children) {
+    public OrganizationFindAllResponse(int id, String name, int depth, Integer parent_id, int status, int sort, List<FindAllUserEntityDto> users, List<OrganizationFindAllResponse> children) {
         this.id = id;
         this.name = name;
         this.depth = depth;
         this.parent_id = parent_id;
         this.status = status;
         this.sort = sort;
-        this.users = users;
-        this.children = children;
+        this.users = users != null ? users : new ArrayList<>(); // Ensure non-null list
+        this.children = children != null ? children : new ArrayList<>(); // Ensure non-null list
     }
 }

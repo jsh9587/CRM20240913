@@ -1,5 +1,4 @@
 package company.demo_last_last202409121553.organization.dto.response.findById;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Value;
@@ -7,14 +6,12 @@ import lombok.Value;
 import java.io.Serializable;
 
 /**
- * DTO for {@link company.demo_last_last202409121553.user.entity.UserEntity}
+ * DTO for {@link company.demo_last_last202409121553.organization.entity.OrganizationEntity}
  */
 @Value
-@Builder
+@Builder // 빌더 패턴 추가
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FindByIdUserEntityDto implements Serializable {
+public class FindByIdParentEntityDto implements Serializable {
     int id;
     String name;
-    String email;
-    String roles;
 }
