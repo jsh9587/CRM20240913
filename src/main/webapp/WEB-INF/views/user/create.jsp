@@ -29,7 +29,7 @@
                         <label for="level">직급</label>
                         <select id="level" class="form-control bg-light border-0 small">
                             <option value="">직급을 선택하세요</option>
-                            <c:forEach var="level" items="${levelList}">
+                            <c:forEach var="level" items="${levels}">
                                 <option value="${level.id}">${level.name}</option>
                             </c:forEach>
                         </select>
@@ -71,13 +71,14 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="password">비밀번호</label>
-                        <input type="password" id="password" class="form-control bg-light border-0 small" placeholder="비밀번호를 입력해주세요.">
+                        <input type="password" id="password" class="form-control bg-light border-0 small"
+                               placeholder="비밀번호를 입력해주세요.">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="status">상태</label>
                         <select id="status" class="form-control bg-light border-0 small">
                             <option value="">상태를 선택하세요</option>
-                            <c:forEach var="status" items="${statusList}">
+                            <c:forEach var="status" items="${statuses}">
                                 <option value="${status.id}">${status.name}</option>
                             </c:forEach>
                         </select>
@@ -86,7 +87,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <button class="btn btn-primary" id="submitButton" type="button" >
+                        <button class="btn btn-primary" id="submitButton" type="button">
                             생성
                         </button>
                         <button class="btn btn-primary" type="button" onclick="history.back();">
@@ -118,23 +119,23 @@
 
         const submitButton = document.querySelector('#submitButton');
 
-        function SearchOrganization(parent_id,depth) {
+        function SearchOrganization(parent_id, depth) {
             const nowDepth = document.querySelector('#organization' + depth);
             const nextDepth = document.querySelector('#organization' + (depth + 1));
-            if( depth === 1 ){
-                   depth2.innerHTML = defaultOption;
-                   depth3.innerHTML = defaultOption;
-                   depth4.innerHTML = defaultOption;
-            }else if( depth === 2 ){
+            if (depth === 1) {
+                depth2.innerHTML = defaultOption;
                 depth3.innerHTML = defaultOption;
                 depth4.innerHTML = defaultOption;
-            }else if( depth === 3 ){
+            } else if (depth === 2) {
+                depth3.innerHTML = defaultOption;
+                depth4.innerHTML = defaultOption;
+            } else if (depth === 3) {
                 depth4.innerHTML = defaultOption;
             }
-            fetch('/api/getOrganizations', {
+            fetch('/api/organization/getOrganizations', {
                 method: 'POST',
                 body: JSON.stringify({
-                    'parent_id':parent_id,
+                    'parent_id': parent_id,
                     'depth': depth
                 }),
                 headers: {
@@ -157,7 +158,7 @@
                 .then(data => {
                     // Check if data is an array
                     if (Array.isArray(data)) {
-                        nowDepth.innerHTML=defaultOption;
+                        nowDepth.innerHTML = defaultOption;
                         data.forEach(org => {
                             const option = document.createElement('option');
                             option.value = org.id;
@@ -166,7 +167,7 @@
                         });
 
                         // Enable the next depth select if there are children
-                        if( nextDepth ){
+                        if (nextDepth) {
                             if (data.length > 0) {
                                 nextDepth.disabled = false;
                             } else {
@@ -183,17 +184,17 @@
         document.querySelectorAll('.organizations').forEach(select => {
             select.addEventListener('change', function () {
                 const depth = parseInt(this.id.replace('organization', ''));
-                if (this.value){
-                    SearchOrganization(parseInt(select.value),depth + 1);
+                if (this.value) {
+                    SearchOrganization(parseInt(select.value), depth + 1);
                 }
             });
         });
 
-        emailBox.addEventListener('blur',function(){
-            fetch('/api/emailCheck', {
+        emailBox.addEventListener('blur', function () {
+            fetch('/api/user/emailCheck', {
                 method: 'POST',
                 body: JSON.stringify({
-                    'email':this.value,
+                    'email': this.value,
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -213,20 +214,14 @@
                     return response.json();
                 })
                 .then(data => {
-                    if( data === 1 ){
+                    if (data === false) {
                         alert('이미 등록된 이메일입니다.');
                         emailBox.value = '';
-                        if( document.querySelector('#emailConfirm') ){
+                        if (document.querySelector('#emailConfirm')) {
                             document.querySelector('#emailConfirm').remove();
                         }
                         return false;
-                    }else if( data === 9 ){
-                        alert('Email 형식에 맞춰 입력해주세요');
-                        if( document.querySelector('#emailConfirm') ){
-                            document.querySelector('#emailConfirm').remove();
-                        }
-                        return false;
-                    }else if( data === 0 ){
+                    } else if (data === true) {
                         const emailConfirm = document.createElement('input');
                         emailConfirm.type = 'hidden';
                         emailConfirm.id = 'emailConfirm';
@@ -240,87 +235,93 @@
                 });
         });
 
-        submitButton.addEventListener('click',function (){
-           const emailConfirm = document.querySelector('#emailConfirm');
-           if( !emailConfirm ){
-               alert('이메일 형식에 맞게 입력해주세요');
-               return false;
-           }
-           if( nameBox.value === ''){
-               alert('이름을 입력해주세요');
-               return false;
-           }
-           if( levelBox.value === ''){
-               alert('직급을 선택해주세요');
-               return false;
-           }
-           if(
-               depth1.value === '' &&
-               depth2.value === '' &&
-               depth3.value === '' &&
-               depth4.value === ''
-           ){
-               alert('조직을 선택해주세요');
-               return false;
-           }
-           if( statusBox.value === ''){
-               alert('상태를 선택해주세요');
-               return false;
-           }
-           if( password.value === ''){
-               alert('비밀번호를 입력해주세요');
-               return false;
-           }
-           const lastSelectedOrganizationValue = lastSelectedOrganization();
-           const requestData = {
-               name: nameBox.value,
-               email: emailBox.value,
-               level_id: levelBox.value,
-               organization_id: lastSelectedOrganizationValue,
-               status_id: statusBox.value,
-               password: passwordBox.value
-           };
-           fetch('/api/userStore',{
-               method: 'POST',
-               body: JSON.stringify(requestData),
-               headers: {
-                   'Content-Type': 'application/json'
-               }
-           })
-               .then(response => {
-                   if (!response.ok) {
-                       // 서버 응답이 성공적이지 않은 경우
-                       return response.json().then(data => {
-                           // 서버에서 반환된 에러 메시지
-                           const errorMessage = data.message || '알 수 없는 오류가 발생했습니다.';
-                           alert(errorMessage);
-                           throw new Error(errorMessage);
-                       });
-                   }
+        submitButton.addEventListener('click', function () {
+            const emailConfirm = document.querySelector('#emailConfirm');
+            if (!emailConfirm) {
+                alert('이메일 형식에 맞게 입력해주세요');
+                return false;
+            }
+            if (nameBox.value === '') {
+                alert('이름을 입력해주세요');
+                return false;
+            }
+            if (levelBox.value === '') {
+                alert('직급을 선택해주세요');
+                return false;
+            }
+            if (
+                depth1.value === '' &&
+                depth2.value === '' &&
+                depth3.value === '' &&
+                depth4.value === ''
+            ) {
+                alert('조직을 선택해주세요');
+                return false;
+            }
+            if (statusBox.value === '') {
+                alert('상태를 선택해주세요');
+                return false;
+            }
+            if (password.value === '') {
+                alert('비밀번호를 입력해주세요');
+                return false;
+            }
+            const lastSelectedOrganizationValue = lastSelectedOrganization();
+            const requestData = {
+                name: nameBox.value,
+                email: emailBox.value,
+                level: {
+                    id: levelBox.value
+                },
+                organization: {
+                    id: lastSelectedOrganizationValue
+                },
+                status: {
+                    id: statusBox.value
+                },
+                password: passwordBox.value
+            };
+            fetch('/api/user/userStore', {
+                method: 'POST',
+                body: JSON.stringify(requestData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        // 서버 응답이 성공적이지 않은 경우
+                        return response.json().then(data => {
+                            // 서버에서 반환된 에러 메시지
+                            const errorMessage = data.message || '알 수 없는 오류가 발생했습니다.';
+                            alert(errorMessage);
+                            throw new Error(errorMessage);
+                        });
+                    }
 
-                   // 응답이 성공적일 경우
-                   return response.json();
-               })
-               .then(data => {
-                   alert('저장완료');
-                   document.location.href='/user';
-                   console.log(data);
-               })
-               .catch(error => {
-                   console.error('Error:', error);
-               });
+                    // 응답이 성공적일 경우
+                    return response.text();  // 응답을 텍스트로 받기
+                })
+                .then(message => {
+                    // 서버에서 받은 메시지 처리
+                    alert(message);
+                    document.location.href = '/user';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
 
-        function lastSelectedOrganization(){
-            let depths =[
-              depth1.value,
-              depth2.value,
-              depth3.value,
-              depth4.value
+        function lastSelectedOrganization() {
+            let depths = [
+                depth1.value,
+                depth2.value,
+                depth3.value,
+                depth4.value
             ];
 
-            for(let i = depths.length-1; i >= 0; i -- ){
-                if( depths[i] ){
+            for (let i = depths.length - 1; i >= 0; i--) {
+                if (depths[i]) {
                     return depths[i];
                 }
             }
@@ -328,7 +329,7 @@
         }
 
 
-        SearchOrganization(0,1);
+        SearchOrganization(0, 1);
     });
 
 </script>
