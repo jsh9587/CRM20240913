@@ -152,6 +152,7 @@
                 })
                 .then(data => {
                     // Check if data is an array
+                    console.log(data);
                     if (Array.isArray(data)) {
                         nowDepth.innerHTML=defaultOption;
                         data.forEach(org => {
@@ -293,6 +294,7 @@
                 return response.json();
             })
             .then(data => {
+                console.log(data);
                 let changeEvent;
                 if( data[0] ){
                     depth1.value = data[0]['id']; // 값을 직접 설정
@@ -331,7 +333,7 @@
             });
         }
 
-        SearchOrganization(0,1);
+        SearchOrganization(null,1);
         fetchOrganization();
     });
 

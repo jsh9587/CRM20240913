@@ -51,8 +51,9 @@ public class OrganizationService {
                 .collect(Collectors.toList());
     }
 
-    public List<OrganizationFindByParentIdAndDepthResponse> findByParentIdAndDepth(int parentId, int depth) {
+    public List<OrganizationFindByParentIdAndDepthResponse> findByParentIdAndDepth(Integer parentId, int depth) {
         List<OrganizationEntity> organizationEntities = organizationRepository.findByParentIdAndDepth(parentId, depth);
+        System.out.println(parentId+", "+depth+"organiEntites"+organizationEntities);
         return organizationEntities.stream()
                 .map(org -> new OrganizationFindByParentIdAndDepthResponse(
                         org.getId(),
