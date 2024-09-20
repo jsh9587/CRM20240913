@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers("/organization","/organization/**").hasAnyRole("IT","ROOT")
-                        .requestMatchers("/level","/level/**").hasAnyRole("IT","LEVEL")
+                        .requestMatchers("/level","/level/**").hasAnyRole("IT","ROOT")
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .anyRequest().authenticated()  // 어떠한 요청이라도 인증필요
                 )

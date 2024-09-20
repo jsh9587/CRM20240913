@@ -39,7 +39,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <button class="btn btn-primary" id="submitButton" type="button" >
+                        <button class="btn btn-primary" id="submitButton" type="button">
                             수정
                         </button>
                         <button class="btn btn-primary" type="button" onclick="history.back();">
@@ -60,7 +60,7 @@
     const levelIdBox = document.querySelector('#level_id');
     const statusBox = document.querySelector('#status');
     submitButton.addEventListener('click', function () {
-        if( levelIdBox.value === ''){
+        if (levelIdBox.value === '') {
             alert('id 설정 오류');
             return false;
         }
@@ -72,17 +72,17 @@
             alert('순번을 입력해주세요');
             return false;
         }
-        if( statusBox.value === ''){
+        if (statusBox.value === '') {
             alert('사용 유무를 선택해주세요');
             return false;
         }
         const requestData = {
-            id:levelIdBox.value,
+            id: levelIdBox.value,
             name: nameBox.value,
             sort: sortBox.value,
             status: statusBox.value
         }
-        fetch('/api/levelEdit', {
+        fetch('/api/level/levelEdit', {
             method: 'POST',
             body: JSON.stringify(requestData),
             headers: {

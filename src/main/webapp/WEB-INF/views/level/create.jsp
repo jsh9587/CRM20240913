@@ -78,7 +78,7 @@
             sort: sortBox.value,
             status:statusBox.value
         }
-        fetch('/api/levelStore', {
+        fetch('/api/level/levelStore', {
             method: 'POST',
             body: JSON.stringify(requestData),
             headers: {
@@ -99,9 +99,11 @@
                 return response.json();
             })
             .then(data => {
-                alert('저장완료');
-                document.location.href = '/level';
-                console.log(data);
+                if( data ){
+                    console.log(data);
+                    alert('저장완료');
+                    document.location.href = '/level';
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
